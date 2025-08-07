@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "798439379134",
+    "project_id": "remainderapp-2bbee",
+    "storage_bucket": "remainderapp-2bbee.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:798439379134:android:38538c052d9d794c1f0eef",
+        "android_client_info": {
+          "package_name": "com.example.remainder"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBxLaGaoYbMwz43g3yiL6Sla6f5oKAXTPI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
