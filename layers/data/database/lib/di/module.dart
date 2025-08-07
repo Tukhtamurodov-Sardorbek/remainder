@@ -1,16 +1,14 @@
 import 'dart:io';
 import 'dart:convert';
 import 'package:core/core.dart';
-import 'package:database/src/storage/app_secure_storage.dart';
-import 'package:database/src/storage/impl/app_secure_storage_impl.dart';
 import 'package:drift/drift.dart';
 import 'package:drift/native.dart';
-import 'package:path/path.dart' as p;
 import 'package:flutter/foundation.dart';
 import 'package:crypto/crypto.dart' show md5;
-import 'package:path_provider/path_provider.dart';
 import 'package:database/src/database/app_database.dart';
+import 'package:database/src/storage/app_secure_storage.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:database/src/storage/impl/app_secure_storage_impl.dart';
 
 @module
 abstract class DatabaseModule {
@@ -20,7 +18,7 @@ abstract class DatabaseModule {
     final name = await AppEncryptedData.ref.databaseName;
     final dbFolder = await getApplicationDocumentsDirectory();
     final hash = md5.convert(utf8.encode(name));
-    final file = File(p.join(dbFolder.path, '$hash.sqlite'));
+    final file = File(FilePath.build(dbFolder.path, '$hash.sqlite'));
 
     final database = NativeDatabase(
       file,
