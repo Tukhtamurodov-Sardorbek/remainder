@@ -1,6 +1,6 @@
 import 'dart:convert' show jsonDecode;
 
-import 'package:core/src/env.dart';
+import 'package:core/src/env/env.dart';
 import 'package:encryptor/encryptor.dart';
 
 final class AppEncryptedData with _Keys {

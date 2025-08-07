@@ -1,29 +1,32 @@
 import 'dart:io';
 import 'dart:convert';
 import 'package:core/core.dart';
+import 'package:database/src/storage/app_secure_storage.dart';
+import 'package:database/src/storage/impl/app_secure_storage_impl.dart';
 import 'package:drift/drift.dart';
 import 'package:drift/native.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:path/path.dart' as p;
 import 'package:flutter/foundation.dart';
 import 'package:crypto/crypto.dart' show md5;
 import 'package:path_provider/path_provider.dart';
 import 'package:database/src/database/app_database.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 @module
 abstract class DatabaseModule {
   @singleton
-  QueryExecutor provideQueryExecutor() {
-    return LazyDatabase(() async {
-      final dbName = await AppEncryptedData.ref.databaseName;
-      final dbFolder = await getApplicationDocumentsDirectory();
-      final hash = md5.convert(utf8.encode(dbName));
-      final file = File(p.join(dbFolder.path, '$hash.sqlite'));
+  @preResolve
+  Future<QueryExecutor> injectQueryExecutor() async {
+    final name = await AppEncryptedData.ref.databaseName;
+    final dbFolder = await getApplicationDocumentsDirectory();
+    final hash = md5.convert(utf8.encode(name));
+    final file = File(p.join(dbFolder.path, '$hash.sqlite'));
 
-      return NativeDatabase(
-        file,
-        logStatements: kDebugMode,
-        setup: (database) {
+    final database = NativeDatabase(
+      file,
+      logStatements: kDebugMode,
+      setup: (database) {
+        try {
           // Check that we're actually running with SQLCipher by quering the cipher_version pragma.
           final result = database.select('pragma cipher_version');
           if (result.isEmpty && Platform.isAndroid) {
@@ -33,30 +36,41 @@ abstract class DatabaseModule {
             );
           }
 
-          final escapedKey = dbName.replaceAll("'", "''");
+          final escapedKey = name.replaceAll("'", "''");
           database.execute("pragma key = '$escapedKey'");
 
           // Test that the key is correct by selecting from a table
           database.execute('select count(*) from sqlite_master');
-        },
-      );
-    });
+        } catch (e, s) {
+          debugPrint('Database setup failed: $e\n$s');
+          rethrow;
+        }
+      },
+    );
+
+    return LazyDatabase(() => database);
   }
 
   @singleton
-  AppDatabase provideAppDatabase(QueryExecutor executor) =>
+  AppDatabase injectAppDatabase(QueryExecutor executor) =>
       AppDatabase(executor);
 
-  @preResolve
   @singleton
-  Future<FlutterSecureStorage> secureStorage() async {
-    final keychain = await AppEncryptedData.ref.keychainSharing;
+  @preResolve
+  Future<FlutterSecureStorage> injectSecureStorage(
+    AppDetails appDetails,
+  ) async {
     return FlutterSecureStorage(
       aOptions: const AndroidOptions(encryptedSharedPreferences: true),
       iOptions: IOSOptions(
-        groupId: keychain,
+        groupId: appDetails.groupKeychain,
         accessibility: KeychainAccessibility.first_unlock,
       ),
     );
+  }
+
+  @singleton
+  AppSecureStorage injectAppSecureStorage(FlutterSecureStorage storage) {
+    return AppSecureStorageImpl(storage);
   }
 }
