@@ -27,16 +27,21 @@ scripts:
       melos exec -- flutter clean
     description: Clean build artifacts in the root and all packages.
 
+  clean_micro_init:
+    run: |
+      find . -type f -name 'micro_init.module.dart' -delete
+    description: Deletes all micro_init.module.dart files from every package/module
+
   builder:
     run: melos exec -- dart run build_runner build --delete-conflicting-outputs
     select-package:
       scope:
+        - core
         - app_bloc
         - navigation
         - backend_services
         - database
         - notification
-        - core
         - repository
         - usecase
     description: Run build_runner generation

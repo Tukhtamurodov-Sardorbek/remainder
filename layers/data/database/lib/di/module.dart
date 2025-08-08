@@ -3,15 +3,15 @@ import 'dart:convert';
 import 'package:core/core.dart';
 import 'package:drift/drift.dart';
 import 'package:drift/native.dart';
+import 'package:database/database.dart';
 import 'package:flutter/foundation.dart';
 import 'package:crypto/crypto.dart' show md5;
-import 'package:database/src/database/app_database.dart';
-import 'package:database/src/storage/app_secure_storage.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:database/src/storage/impl/app_secure_storage_impl.dart';
 
 @module
 abstract class DatabaseModule {
+  /// Database
   @singleton
   @preResolve
   Future<QueryExecutor> injectQueryExecutor() async {
@@ -53,11 +53,9 @@ abstract class DatabaseModule {
   AppDatabase injectAppDatabase(QueryExecutor executor) =>
       AppDatabase(executor);
 
+  /// Storage
   @singleton
-  @preResolve
-  Future<FlutterSecureStorage> injectSecureStorage(
-    AppDetails appDetails,
-  ) async {
+  FlutterSecureStorage injectSecureStorage(AppDetails appDetails) {
     return FlutterSecureStorage(
       aOptions: const AndroidOptions(encryptedSharedPreferences: true),
       iOptions: IOSOptions(
@@ -71,4 +69,28 @@ abstract class DatabaseModule {
   AppSecureStorage injectAppSecureStorage(FlutterSecureStorage storage) {
     return AppSecureStorageImpl(storage);
   }
+
+  /// DAO
+  @lazySingleton
+  IntakeLogsDao injectIntakeLogsDao(AppDatabase db) => IntakeLogsDao(db);
+
+  @lazySingleton
+  MedicinesDao injectMedicinesDao(AppDatabase db) => MedicinesDao(db);
+
+  @lazySingleton
+  RefillRemindersDao injectRefillRemindersDao(AppDatabase db) =>
+      RefillRemindersDao(db);
+
+  @lazySingleton
+  ReminderTimesDao injectReminderTimesDao(AppDatabase db) =>
+      ReminderTimesDao(db);
+
+  @lazySingleton
+  SchedulesDao injectSchedulesDao(AppDatabase db) => SchedulesDao(db);
+
+  @lazySingleton
+  SnoozesDao injectSnoozesDao(AppDatabase db) => SnoozesDao(db);
+
+  @lazySingleton
+  UsersDao injectUsersDao(AppDatabase db) => UsersDao(db);
 }

@@ -47,7 +47,8 @@ class AppSecureStorageImpl implements AppSecureStorage {
 
   @override
   Future<int> incrementPinAttempt() async {
-    final newAttempt = (await getPinAttempts()) + 1;
+    final attempts = await getPinAttempts();
+    final newAttempt = attempts + 1;
 
     await _storage.write(
       key: _StorageKey.pinAttempts.key,
@@ -71,7 +72,7 @@ class AppSecureStorageImpl implements AppSecureStorage {
 
   // * CLEAR
   @override
-  Future<void> deleteAll() async {
+  Future<void> clear() {
     return _storage.deleteAll();
   }
 }

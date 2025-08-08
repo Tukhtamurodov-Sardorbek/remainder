@@ -1,7 +1,7 @@
 name: database
 description: "A new Flutter package project."
 version: 0.0.1
-homepage:
+
 
 environment:
   sdk: ^3.8.1
@@ -13,7 +13,7 @@ dependencies:
 
   # Database
   drift: ^2.28.1
-  drift_flutter: ^0.2.5
+#  drift_flutter: ^0.2.5
   sqlcipher_flutter_libs: ^0.6.8
 
   # Storage

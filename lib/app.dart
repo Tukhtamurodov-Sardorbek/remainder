@@ -8,12 +8,11 @@ class RemainderApp extends StatelessWidget {
 
   static Future<void> setup() async {
     await Future.wait<dynamic>([
+      configureDependencies(),
+      BackendServices.instance.init(),
       SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge),
       SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]),
     ]);
-
-    await BackendServices.instance.init();
-    configureDependencies();
   }
 
   @override
@@ -72,7 +71,7 @@ class Home extends StatelessWidget {
             child: Center(
               child: ElevatedButton(
                 onPressed: () {
-                  throw Exception('fatttal');
+                  throw Exception('New Exception test');
                 },
                 child: const Text('Change Color'),
               ),

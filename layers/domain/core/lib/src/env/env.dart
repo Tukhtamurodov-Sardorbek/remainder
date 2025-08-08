@@ -4,6 +4,8 @@ part 'env.g.dart';
 
 @Envied(path: '.env', obfuscate: true)
 abstract class Env {
+  static String get dsnKey => _dsnKey;
+
   static String get database => _database;
 
   static String get keychainSharing => _keychainSharing;
@@ -13,4 +15,7 @@ abstract class Env {
 
   @EnviedField(varName: 'keychainSharing', obfuscate: true)
   static final String _keychainSharing = _Env._keychainSharing;
+
+  @EnviedField(varName: 'dsnKey', obfuscate: true)
+  static final String _dsnKey = _Env._dsnKey;
 }

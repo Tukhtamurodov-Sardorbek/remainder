@@ -7,9 +7,8 @@
 import 'dart:async' as _i687;
 
 import 'package:core/core.dart' as _i494;
+import 'package:database/database.dart' as _i252;
 import 'package:database/di/module.dart' as _i45;
-import 'package:database/src/database/app_database.dart' as _i116;
-import 'package:database/src/storage/app_secure_storage.dart' as _i938;
 import 'package:drift/drift.dart' as _i500;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart' as _i558;
 import 'package:injectable/injectable.dart' as _i526;
@@ -23,14 +22,26 @@ class DatabasePackageModule extends _i526.MicroPackageModule {
       () => databaseModule.injectQueryExecutor(),
       preResolve: true,
     );
-    await gh.singletonAsync<_i558.FlutterSecureStorage>(
-      () => databaseModule.injectSecureStorage(gh<_i494.AppDetails>()),
-      preResolve: true,
-    );
-    gh.singleton<_i116.AppDatabase>(
+    gh.singleton<_i558.FlutterSecureStorage>(
+        () => databaseModule.injectSecureStorage(gh<_i494.AppDetails>()));
+    gh.singleton<_i252.AppDatabase>(
         () => databaseModule.injectAppDatabase(gh<_i500.QueryExecutor>()));
-    gh.singleton<_i938.AppSecureStorage>(() => databaseModule
+    gh.singleton<_i252.AppSecureStorage>(() => databaseModule
         .injectAppSecureStorage(gh<_i558.FlutterSecureStorage>()));
+    gh.lazySingleton<_i252.IntakeLogsDao>(
+        () => databaseModule.injectIntakeLogsDao(gh<_i252.AppDatabase>()));
+    gh.lazySingleton<_i252.MedicinesDao>(
+        () => databaseModule.injectMedicinesDao(gh<_i252.AppDatabase>()));
+    gh.lazySingleton<_i252.RefillRemindersDao>(
+        () => databaseModule.injectRefillRemindersDao(gh<_i252.AppDatabase>()));
+    gh.lazySingleton<_i252.ReminderTimesDao>(
+        () => databaseModule.injectReminderTimesDao(gh<_i252.AppDatabase>()));
+    gh.lazySingleton<_i252.SchedulesDao>(
+        () => databaseModule.injectSchedulesDao(gh<_i252.AppDatabase>()));
+    gh.lazySingleton<_i252.SnoozesDao>(
+        () => databaseModule.injectSnoozesDao(gh<_i252.AppDatabase>()));
+    gh.lazySingleton<_i252.UsersDao>(
+        () => databaseModule.injectUsersDao(gh<_i252.AppDatabase>()));
   }
 }
 

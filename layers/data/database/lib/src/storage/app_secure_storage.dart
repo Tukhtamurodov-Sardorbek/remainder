@@ -21,5 +21,5 @@ abstract class AppSecureStorage {
   Future<void> saveFCMToken(String token);
 
   // * CLEAR
-  Future<void> deleteAll();
+  Future<void> clear();
 }

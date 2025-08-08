@@ -7,8 +7,8 @@ import 'package:package_info_plus/package_info_plus.dart';
 
 @module
 abstract class CoreModule {
-  @lazySingleton
   @preResolve
+  @lazySingleton
   Future<PackageInfo> providePackageInfo() => PackageInfo.fromPlatform();
 
   @preResolve

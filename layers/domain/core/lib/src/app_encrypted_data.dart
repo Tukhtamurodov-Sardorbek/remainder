@@ -13,6 +13,8 @@ final class AppEncryptedData with _Keys {
     return _instance!;
   }
 
+  Future<String> get dsn => CryptoReader.decrypt(_dsnKey);
+
   Future<String> get databaseName => CryptoReader.decrypt(_kDB);
 
   Future<String> get keychainSharing => CryptoReader.decrypt(_kKeychainSharing);
@@ -20,6 +22,8 @@ final class AppEncryptedData with _Keys {
 
 mixin _Keys {
   List<int> get _kDB => _converter(Env.database);
+
+  List<int> get _dsnKey => _converter(Env.dsnKey);
 
   List<int> get _kKeychainSharing => _converter(Env.keychainSharing);
 
