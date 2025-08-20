@@ -7,12 +7,14 @@ class RemainderApp extends StatelessWidget {
   const RemainderApp({super.key});
 
   static Future<void> setup() async {
-    await Future.wait<dynamic>([
+    WidgetsFlutterBinding.ensureInitialized();
+    await Future.wait([
       configureDependencies(),
-      BackendServices.instance.init(),
+      AppBackendService.instance.init(),
       SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge),
       SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]),
     ]);
+    return;
   }
 
   @override
@@ -46,6 +48,7 @@ class RemainderApp extends StatelessWidget {
             ),
           );
         },
+        navigatorObservers: AppBackendService.instance.navigationObservers,
       ),
     );
   }
@@ -71,7 +74,10 @@ class Home extends StatelessWidget {
             child: Center(
               child: ElevatedButton(
                 onPressed: () {
-                  throw Exception('New Exception test');
+                  // throw Exception('New Exception test');
+                  AppFirebaseAnalyticsImpl.ref.clickTest().then((_) {
+                    print('>>>> EVENT IS SENT');
+                  });
                 },
                 child: const Text('Change Color'),
               ),

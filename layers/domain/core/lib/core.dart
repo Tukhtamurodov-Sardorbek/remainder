@@ -11,6 +11,7 @@ export 'package:path_provider/path_provider.dart';
 export 'package:core/src/app_details.dart';
 export 'package:core/src/app_encrypted_data.dart';
 export 'package:core/src/models/device_info.dart';
+export 'package:core/src/extensions/string.dart';
 
 import 'package:path/path.dart' as p;
 

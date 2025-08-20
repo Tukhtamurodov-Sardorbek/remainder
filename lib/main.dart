@@ -6,12 +6,11 @@ import 'package:remainder/app.dart';
 void main() async {
   await runZonedGuarded(
     () async {
-      WidgetsFlutterBinding.ensureInitialized();
       await RemainderApp.setup();
       runApp(const RemainderApp());
     },
     (error, stack) {
-      BackendServices.instance.recordError(error, stack);
+      AppBackendService.instance.recordError(error, stack);
       debugPrintStack(label: error.toString(), stackTrace: stack);
     },
   );
