@@ -18,6 +18,17 @@ final class AppEncryptedData with _Keys {
   Future<String> get databaseName => CryptoReader.decrypt(_kDB);
 
   Future<String> get keychainSharing => CryptoReader.decrypt(_kKeychainSharing);
+
+  Future<String> get iosBannerUnitId => CryptoReader.decrypt(_kIOSBannerUnitId);
+
+  Future<String> get androidBannerUnitId =>
+      CryptoReader.decrypt(_kAndroidBannerUnitId);
+
+  Future<String> get androidInterstitialUnitId =>
+      CryptoReader.decrypt(_kAndroidInterstitialUnitId);
+
+  Future<String> get androidRewardedUnitId =>
+      CryptoReader.decrypt(_kAndroidRewardedUnitId);
 }
 
 mixin _Keys {
@@ -26,6 +37,16 @@ mixin _Keys {
   List<int> get _kDsnKey => _converter(Env.dsnKey);
 
   List<int> get _kKeychainSharing => _converter(Env.keychainSharing);
+
+  List<int> get _kIOSBannerUnitId => _converter(Env.iosBannerUnitId);
+
+  List<int> get _kAndroidBannerUnitId => _converter(Env.androidBannerUnitId);
+
+  List<int> get _kAndroidInterstitialUnitId =>
+      _converter(Env.androidInterstitialUnitId);
+
+  List<int> get _kAndroidRewardedUnitId =>
+      _converter(Env.androidRewardedUnitId);
 
   List<int> _converter(String jsn) => List<int>.from(jsonDecode(jsn));
 }

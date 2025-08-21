@@ -1,7 +1,6 @@
 name: feature_home
 description: "A new Flutter package project."
 version: 0.0.1
-homepage:
 
 environment:
   sdk: ^3.8.1
@@ -10,6 +9,11 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+
+
+  core:
+    path: ../../domain/core
+
 
 dev_dependencies:
   flutter_test:
