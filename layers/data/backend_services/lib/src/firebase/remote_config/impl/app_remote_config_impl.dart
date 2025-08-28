@@ -33,6 +33,11 @@ final class AppRemoteConfig extends AppRemoteConfiguration with _Mixin {
       (event) async {
         // To make fetched parameter values available to app
         await _remoteConfig.activate();
+        // debugPrint('LOOK: ${event.updatedKeys}');
+        // final Map<String, RemoteConfigValue> allParams = _remoteConfig.getAll();
+        // allParams.forEach((key, value) {
+        //   debugPrint('> RC: $key: ${value.asString()}');
+        // });
       },
       onError: (e, s) {
         try {

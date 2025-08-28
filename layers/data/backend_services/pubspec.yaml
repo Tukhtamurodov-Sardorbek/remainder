@@ -17,6 +17,11 @@ dependencies:
   sentry_flutter: ^9.6.0
   firebase_remote_config: ^6.0.0
   google_mobile_ads: ^6.0.0
+  firebase_messaging: ^16.0.0
+#  flutter_local_notifications: ^19.4.0
+  awesome_notifications: ^0.10.1
+  awesome_notifications_core: ^0.10.1
+#  awesome_notifications_fcm: ^0.10.1 # replacement of firebase_messaging
 
   core:
     path: ../../domain/core

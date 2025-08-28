@@ -20,6 +20,9 @@ dependencies:
   package_info_plus: ^8.3.0
   device_info_plus: ^11.5.0
   android_id: ^0.4.0
+  flutter_full_screen_intent: ^0.0.8
+  android_alarm_manager_plus: ^4.0.8
+  receive_intent: ^0.2.7
 
   encryptor:
     git:

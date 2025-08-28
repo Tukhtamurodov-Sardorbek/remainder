@@ -1,3 +1,4 @@
+import 'package:backend_services/backend_services.dart';
 import 'package:backend_services/src/firebase/ad_mob/app_ad_mob.dart';
 import 'package:backend_services/src/firebase/analytics/impl/app_firebase_analytics.dart';
 import 'package:backend_services/src/firebase/remote_config/impl/app_remote_config_impl.dart';
@@ -24,9 +25,10 @@ final class AppBackendService extends BackendServices with _ServicesMixin {
     await AppRemoteConfig.ref.init();
     await AppAdvertisements.ref.init();
     await AppFirebaseAnalyticsImpl.ref.init();
+    await AppAwesomeNotification().init();
 
     // * Crash analytics settings
-    FlutterError.onError = (details) async {
+    FlutterError.onError = (details) {
       FlutterError.presentError(details);
       recordFatal(details);
     };

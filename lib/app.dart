@@ -1,4 +1,6 @@
 import 'package:backend_services/backend_services.dart';
+import 'package:core/core.dart';
+import 'package:design_system/design_system.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:remainder/di/injector.dart';
@@ -8,6 +10,7 @@ class RemainderApp extends StatelessWidget {
 
   static Future<void> setup() async {
     WidgetsFlutterBinding.ensureInitialized();
+    await AndroidAlarmManager.initialize();
     await Future.wait([
       configureDependencies(),
       AppBackendService.instance.init(),
@@ -24,9 +27,9 @@ class RemainderApp extends StatelessWidget {
       child: MaterialApp(
         home: Home(),
         title: 'Flutter Demo',
-        theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        ),
+        theme: AppThemeConfig.ref.data,
+        // The navigator key is necessary to allow to navigate through static methods
+        navigatorKey: AppNavigatorKey.navigatorKey,
         builder: (context, child) {
           return MediaQuery(
             data: MediaQuery.of(
@@ -49,6 +52,7 @@ class RemainderApp extends StatelessWidget {
           );
         },
         navigatorObservers: AppBackendService.instance.navigationObservers,
+        routes: {'/fullScreenTest': (context) => FullScreenTest()},
       ),
     );
   }
@@ -62,6 +66,7 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  static const platform = MethodChannel('com.example.overlay_plugin/overlay');
   late final ValueNotifier<BannerAd?> _bannerNotifier;
   late final ValueNotifier<InterstitialAd?> _interstitialAd;
   late final ValueNotifier<RewardedAd?> _rewardedAd;
@@ -147,6 +152,9 @@ class _HomeState extends State<Home> {
           ),
         );
       }
+      final fullScreenIntentPluginTest =
+          await AppBackgroundManager.initPlatformState();
+      print('object test: $fullScreenIntentPluginTest');
     });
   }
 
@@ -168,29 +176,60 @@ class _HomeState extends State<Home> {
       body: Stack(
         children: [
           Center(
-            child: ElevatedButton(
-              onPressed: () {
-                // throw Exception('New Exception test');
-                AppFirebaseAnalyticsImpl.ref.clickTest();
-              },
-              child: const Text('Fire an event'),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                // ElevatedButton(
+                //   onPressed: () async {
+                //     // throw Exception('New Exception test');
+                //     // AppFirebaseAnalyticsImpl.ref.clickTest();
+                //
+                //     // if (await Permission.systemAlertWindow.request().isGranted) {
+                //     //   try {
+                //     //     await platform.invokeMethod('startOverlay');
+                //     //   } on PlatformException catch (e) {
+                //     //     print("Failed to start overlay: '${e.message}'.");
+                //     //   }
+                //     // } else {
+                //     //   // Handle permission denied
+                //     //   print("Overlay permission denied");
+                //     // }
+                //
+                //     // final canSchedule = await AlarmPermission.canScheduleExactAlarms();
+                //     //
+                //     // if (!canSchedule) {
+                //     //   // Redirect user to system settings
+                //     //   await AlarmPermission.openExactAlarmSettings();
+                //     //   return;
+                //     // }
+                //     //
+                //     // AppBackgroundManager.scheduleOpen();
+                //
+                //
+                //
+                //     // AppAwesomeNotification().showFullScreenNotification();
+                //   },
+                //   child: const Text('Fire an event'),
+                // ),
+                AppIconSvg.asset(AppAsset.icPillMind, height: 200),
+              ],
             ),
           ),
-          ValueListenableBuilder(
-            valueListenable: _bannerNotifier,
-            builder: (context, banner, _) {
-              if (banner != null) {
-                return Positioned(
-                  top: 0,
-                  left: 0,
-                  right: 0,
-                  height: banner.size.height.toDouble(),
-                  child: AdWidget(ad: banner),
-                );
-              }
-              return SizedBox.shrink();
-            },
-          ),
+          // ValueListenableBuilder(
+          //   valueListenable: _bannerNotifier,
+          //   builder: (context, banner, _) {
+          //     if (banner != null) {
+          //       return Positioned(
+          //         top: 0,
+          //         left: 0,
+          //         right: 0,
+          //         height: banner.size.height.toDouble(),
+          //         child: AdWidget(ad: banner),
+          //       );
+          //     }
+          //     return SizedBox.shrink();
+          //   },
+          // ),
         ],
       ),
       floatingActionButton: Column(
@@ -208,9 +247,15 @@ class _HomeState extends State<Home> {
             onPressed: () {
               _rewardedAd.value?.show(
                 onUserEarnedReward: (AdWithoutView ad, RewardItem reward) {
-                  debugPrint('User earned reward: ${reward.amount} ${reward.type}');
+                  debugPrint(
+                    'User earned reward: ${reward.amount} ${reward.type}',
+                  );
                   ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text('You earned ${reward.amount} ${reward.type}!')),
+                    SnackBar(
+                      content: Text(
+                        'You earned ${reward.amount} ${reward.type}!',
+                      ),
+                    ),
                   );
                 },
               );
@@ -219,5 +264,41 @@ class _HomeState extends State<Home> {
         ],
       ),
     );
+  }
+}
+
+class FullScreenTest extends StatelessWidget {
+  const FullScreenTest({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text('Full Screen Widget')),
+      body: Center(child: Text('This is a full-screen Flutter widget!')),
+    );
+  }
+}
+
+class AlarmPermission {
+  static const MethodChannel _channel = MethodChannel("alarm_permission");
+
+  static Future<bool> canScheduleExactAlarms() async {
+    final bool result = await _channel.invokeMethod("canScheduleExactAlarms");
+    print('>>>> canScheduleExactAlarms: $result');
+    return result;
+    // const MethodChannel _channel = MethodChannel("alarm_permission");
+    // String batteryLevel;
+    // try {
+    //   final result = await _channel.invokeMethod<bool>('canScheduleExactAlarms');
+    //   batteryLevel = 'Battery level at $result % .';
+    // } on PlatformException catch (e) {
+    //   batteryLevel = "Failed to get battery level: '${e.message}'.";
+    // }
+    //
+    // print('LOOK:$batteryLevel');
+  }
+
+  static Future<void> openExactAlarmSettings() async {
+    await _channel.invokeMethod("openExactAlarmSettings");
   }
 }
