@@ -1,0 +1,3 @@
+class GenerateUnionHelpers {
+  const GenerateUnionHelpers();
+}

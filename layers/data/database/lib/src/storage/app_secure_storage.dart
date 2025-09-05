@@ -1,22 +1,27 @@
 abstract class AppSecureStorage {
-  // * PIN
-  Future<bool> hasPIN();
+  // * RUN TIMES
+  Future<int> get getRunTimes;
 
-  Future<String?> getPIN();
+  Future<void> saveRunTimes();
+
+  // * PIN
+  Future<bool> get hasPIN;
+
+  Future<String?> get getPIN;
 
   Future<void> savePIN(String pin);
 
   Future<void> deletePIN();
 
   // * PIN Attempts
-  Future<int> getPinAttempts();
+  Future<int> get getPinAttempts;
 
   Future<void> resetPinAttempts();
 
   Future<int> incrementPinAttempt();
 
   // * FCM
-  Future<String?> getFCMToken();
+  Future<String?> get getFCMToken;
 
   Future<void> saveFCMToken(String token);
 

@@ -1,0 +1,14 @@
+targets:
+  $default:
+    builders:
+      union_generator:
+        generate_for:
+          - lib/**.dart
+
+builders:
+  union_generator:
+    import: "package:code_generator/builder.dart"
+    builder_factories: [ "unionBuilder" ]
+    build_extensions: { ".dart": [ ".union.dart" ] }
+    auto_apply: dependents
+    build_to: source

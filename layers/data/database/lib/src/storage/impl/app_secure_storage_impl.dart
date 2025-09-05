@@ -8,20 +8,39 @@ class AppSecureStorageImpl implements AppSecureStorage {
 
   const AppSecureStorageImpl(this._storage);
 
+  // * Helper methods
+  Future<void> _setNumber(_StorageKey storage, num value) async {
+    return _storage.write(key: storage.key, value: value.toString());
+  }
+
+  // * RUN TIMES
+  @override
+  Future<int> get getRunTimes async {
+    final strData = await _storage.read(key: _StorageKey.runTimes.key) ?? '';
+    final result = int.tryParse(strData) ?? 0;
+    return result;
+  }
+
+  @override
+  Future<void> saveRunTimes() async {
+    final times = await getRunTimes;
+    return _setNumber(_StorageKey.runTimes, times + 1);
+  }
+
   // * PIN
   @override
-  Future<bool> hasPIN() async {
+  Future<bool> get hasPIN async {
     final value = await _storage.read(key: _StorageKey.pin.key);
     return value != null && value.isNotEmpty;
   }
 
   @override
-  Future<String?> getPIN() async {
+  Future<String?> get getPIN {
     return _storage.read(key: _StorageKey.pin.key);
   }
 
   @override
-  Future<void> savePIN(String pin) async {
+  Future<void> savePIN(String pin) {
     return _storage.write(key: _StorageKey.pin.key, value: pin);
   }
 
@@ -32,12 +51,10 @@ class AppSecureStorageImpl implements AppSecureStorage {
 
   // * PIN Attempts
   @override
-  Future<int> getPinAttempts() async {
-    final attemptStr = await _storage.read(key: _StorageKey.pinAttempts.key);
-    if (attemptStr != null) {
-      return int.tryParse(attemptStr) ?? 0;
-    }
-    return 0;
+  Future<int> get getPinAttempts async {
+    final attemptStr =
+        await _storage.read(key: _StorageKey.pinAttempts.key) ?? '';
+    return int.tryParse(attemptStr) ?? 0;
   }
 
   @override
@@ -47,20 +64,15 @@ class AppSecureStorageImpl implements AppSecureStorage {
 
   @override
   Future<int> incrementPinAttempt() async {
-    final attempts = await getPinAttempts();
+    final attempts = await getPinAttempts;
     final newAttempt = attempts + 1;
-
-    await _storage.write(
-      key: _StorageKey.pinAttempts.key,
-      value: newAttempt.toString(),
-    );
-
+    await _setNumber(_StorageKey.pinAttempts, newAttempt);
     return newAttempt;
   }
 
   // * FCM
   @override
-  Future<String?> getFCMToken() async {
+  Future<String?> get getFCMToken async {
     final value = await _storage.read(key: _StorageKey.fcmToken.key);
     return value;
   }

@@ -3,6 +3,7 @@ library core;
 export 'package:core/di/micro_init.module.dart';
 
 export 'package:get_it/get_it.dart';
+export 'package:equatable/equatable.dart';
 export 'package:injectable/injectable.dart';
 export 'package:auto_route/auto_route.dart';
 export 'package:auto_route/annotations.dart';
@@ -16,7 +17,6 @@ export 'package:core/src/models/device_info.dart';
 export 'package:core/src/extensions/string.dart';
 export 'package:core/src/navigator_key.dart';
 export 'package:core/src/background_manager/app_background_manager.dart';
-
 
 import 'package:path/path.dart' as p;
 

@@ -3,13 +3,16 @@ import 'package:core/core.dart';
 import 'package:design_system/design_system.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:remainder/di/injector.dart';
 
 class RemainderApp extends StatelessWidget {
   const RemainderApp({super.key});
 
   static Future<void> setup() async {
-    WidgetsFlutterBinding.ensureInitialized();
+    final widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+    FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
+
     await AndroidAlarmManager.initialize();
     await Future.wait([
       configureDependencies(),
