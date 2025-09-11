@@ -1,13 +1,10 @@
-import 'package:code_generator/code_generator.dart' show GenerateUnionHelpers;
-import 'package:core/core.dart' show Equatable;
+part of 'entry_cubit.dart';
 
-part 'entry_state.union.dart';
+@freezed
+sealed class EntryState with _$EntryState{
+  const factory EntryState.initial() = _InitialState;
 
-@GenerateUnionHelpers()
-abstract class _EntryState {
-  _EntryState.initial();
+  const factory EntryState.notIntroduced() = _NotIntroducedState;
 
-  _EntryState.notIntroduced();
-
-  _EntryState.introduced(String data);
+  const factory EntryState.introduced() = _IntroducedState;
 }

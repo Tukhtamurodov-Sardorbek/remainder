@@ -10,6 +10,7 @@ class AppIconSvg extends SvgPicture {
     super.color,
     super.colorBlendMode,
     super.fit,
+    super.colorFilter,
     super.alignment = Alignment.center,
     super.package = 'design_system',
   }) : super.asset();

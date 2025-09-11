@@ -8,7 +8,7 @@ extension ContextExt on BuildContext {
     return isDarkMode;
   }
 
-  SystemUiOverlayStyle getSystemUiOverlayStyle() {
+  SystemUiOverlayStyle get getSystemUiOverlayStyle {
     final SystemUiOverlayStyle systemOverlayStyle;
     switch (Theme.of(this).brightness) {
       case Brightness.dark:

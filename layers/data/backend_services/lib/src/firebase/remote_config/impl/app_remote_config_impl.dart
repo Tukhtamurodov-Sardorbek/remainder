@@ -27,7 +27,7 @@ final class AppRemoteConfig extends AppRemoteConfiguration with _Mixin {
       ),
     );
 
-    await _remoteConfig.fetchAndActivate();
+    _remoteConfig.fetchAndActivate().ignore();
 
     _remoteConfig.onConfigUpdated.listen(
       (event) async {

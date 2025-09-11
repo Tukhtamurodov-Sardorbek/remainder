@@ -10,13 +10,19 @@ export 'package:auto_route/annotations.dart';
 export 'package:path_provider/path_provider.dart';
 export 'package:flutter_full_screen_intent/flutter_full_screen_intent.dart';
 export 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
+export 'package:easy_localization/easy_localization.dart';
+
+export 'package:core/generated/locale_keys.g.dart';
 
 export 'package:core/src/app_details.dart';
 export 'package:core/src/app_encrypted_data.dart';
 export 'package:core/src/models/device_info.dart';
 export 'package:core/src/extensions/string.dart';
 export 'package:core/src/navigator_key.dart';
+export 'package:core/src/locale.dart';
 export 'package:core/src/background_manager/app_background_manager.dart';
+export 'package:core/src/generics/value_notifier.dart';
+export 'package:core/src/generics/page_controller.dart';
 
 import 'package:path/path.dart' as p;
 

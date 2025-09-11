@@ -23,6 +23,8 @@ dependencies:
   android_alarm_manager_plus: ^4.0.8
   receive_intent: ^0.2.7
   equatable: ^2.0.7
+  easy_localization: ^3.0.8
+#  easy_localization_loader: ^2.0.2
 
   encryptor:
     git:
@@ -34,16 +36,21 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
 
-  source_gen: ^3.1.0
-  build_runner: ^2.6.0
+  build_runner: ^2.4.13
   flutter_lints: ^6.0.0
   envied_generator: ^1.2.0
   injectable_generator: ^2.8.1
+#  easy_localization_generator: ^0.3.3
 
-targets:
-  $default:
-    builders:
-      union_generator:
-        generate_for:
-          - lib/**.dart
+dependency_overrides:
+  intl: 0.20.2
+
+flutter:
+  assets:
+    - translations/
+
+#easy_localization:
+#  path: translations
+#  format: yaml
+#  output: lib/generated/locale_keys.g.dart
 

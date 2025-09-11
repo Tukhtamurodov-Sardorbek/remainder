@@ -125,6 +125,7 @@ class UnionGenerator extends GeneratorForAnnotation<GenerateUnionHelpers> {
 
     final buffer = StringBuffer();
 
+    buffer.writeln('@immutable');
     buffer.writeln('sealed class $className extends Equatable {');
     buffer.writeln('const $className._();');
 

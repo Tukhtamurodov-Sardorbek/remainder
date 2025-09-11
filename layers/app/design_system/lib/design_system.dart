@@ -5,6 +5,7 @@ import 'package:design_system/src/theme/impl/app_theme_impl.dart';
 
 export 'package:flutter_svg/flutter_svg.dart';
 export 'package:flutter_screenutil/flutter_screenutil.dart';
+export 'package:animated_text_kit/animated_text_kit.dart';
 
 export 'src/assets/app_asset.dart';
 export 'src/assets/svg.dart';
@@ -17,5 +18,12 @@ export 'src/extensions/text_style_ext.dart';
 export 'src/extensions/widget.dart';
 export 'src/widgets/app_stateful_widget.dart';
 export 'src/widgets/app_stateless_widget.dart';
+export 'src/widgets/animations/animation_effect.dart';
+export 'src/widgets/animations/animation_list_view_item.dart';
+export 'src/widgets/animations/down_to_up.dart';
+export 'src/widgets/app_buttons.dart';
+export 'src/widgets/app_text_form_field.dart';
+export 'src/widgets/app_tagged_text.dart';
+export 'src/widgets/app_bar.dart';
 
 typedef AppThemeConfig = AppThemeImpl;

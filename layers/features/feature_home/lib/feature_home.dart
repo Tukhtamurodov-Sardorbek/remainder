@@ -1,5 +1,9 @@
-/// A Calculator.
-class Calculator {
-  /// Returns [value] plus 1.
-  int addOne(int value) => value + 1;
+import 'package:core/core.dart';
+
+export 'package:feature_home/feature_home.gr.dart';
+
+@AutoRouterConfig()
+class FeatureHomeAutoRouterModule extends RootStackRouter {
+  @override
+  List<AutoRoute> get routes => [];
 }

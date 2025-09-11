@@ -1,6 +1,9 @@
 import 'dart:async';
 import 'dart:isolate' show Isolate;
+
+import 'package:core/core.dart';
 import 'package:backend_services/backend_services.dart';
+
 // import 'package:core/core.dart' show AndroidAlarmManager;
 import 'package:design_system/design_system.dart' show ScreenUtilInit;
 import 'package:flutter/material.dart';
@@ -18,7 +21,7 @@ void printHello() {
 void main() async {
   await runZonedGuarded(
     () async {
-      await RemainderApp.setup();
+      await Future.microtask(RemainderApp.setup);
       runApp(
         ScreenUtilInit(
           minTextAdapt: true,
@@ -28,17 +31,16 @@ void main() async {
           child: const RemainderApp(),
           builder: (context, child) {
             FlutterNativeSplash.remove();
-            return child!;
-            // return EasyLocalization(
-            //   useOnlyLangCode: true,
-            //   useFallbackTranslations: true,
-            //   path: AppLocaleConfig.localePath,
-            //   fallbackLocale: const Locale(AppLocaleConfig.fallbackLocale),
-            //   supportedLocales: AppLocale.values
-            //       .map((e) => Locale(e.languageCode))
-            //       .toList(),
-            //   child: child!,
-            // );
+            return EasyLocalization(
+              useOnlyLangCode: true,
+              useFallbackTranslations: true,
+              path: AppLocaleConfig.localePath,
+              fallbackLocale: const Locale(AppLocaleConfig.fallbackLocale),
+              supportedLocales: AppLocale.values
+                  .map((e) => Locale(e.languageCode))
+                  .toList(),
+              child: child!,
+            );
           },
         ),
       );

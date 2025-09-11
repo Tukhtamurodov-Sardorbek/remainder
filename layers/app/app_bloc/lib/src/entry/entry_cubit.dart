@@ -1,6 +1,9 @@
-import 'package:app_bloc/src/entry/entry_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:usecase/usecase.dart' show EntryUsecase;
+import 'package:freezed_annotation/freezed_annotation.dart';
+
+part 'entry_state.dart';
+part 'entry_cubit.freezed.dart';
 
 class EntryCubit extends Cubit<EntryState> {
   final EntryUsecase _usecase;
@@ -14,7 +17,7 @@ class EntryCubit extends Cubit<EntryState> {
     if (times == 0) {
       emit(const EntryState.notIntroduced());
     } else {
-      emit(EntryState.introduced(''));
+      emit(EntryState.introduced());
     }
     _updateRunTime();
   }

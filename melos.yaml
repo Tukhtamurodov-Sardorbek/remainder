@@ -8,6 +8,9 @@ packages:
   - layers/features/**
   - '*'
 
+ignore:
+  - code_generator
+
 scripts:
 
   analyze:
@@ -44,6 +47,15 @@ scripts:
         - notification
         - repository
         - usecase
+    description: Run build_runner generation
+
+  builder_ui:
+    run: melos exec -- dart run build_runner build --delete-conflicting-outputs
+    select-package:
+      scope:
+        - entry_feature
+        - feature_home
+        - feature_local_auth
     description: Run build_runner generation
 
   builder_app_bloc:

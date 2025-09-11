@@ -12,19 +12,6 @@ abstract class ThemedState<T extends AppStatefulWidget> extends State<T> {
     super.didChangeDependencies();
     theme = Theme.of(context);
   }
-
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context);
 }
 
 mixin AppStatefulMixin<T extends StatefulWidget> on State<T> {

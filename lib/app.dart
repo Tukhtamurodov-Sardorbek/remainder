@@ -1,9 +1,10 @@
 import 'package:backend_services/backend_services.dart';
 import 'package:core/core.dart';
 import 'package:design_system/design_system.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide AppBar;
 import 'package:flutter/services.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
+import 'package:navigation/navigation.dart';
 import 'package:remainder/di/injector.dart';
 
 class RemainderApp extends StatelessWidget {
@@ -12,10 +13,11 @@ class RemainderApp extends StatelessWidget {
   static Future<void> setup() async {
     final widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
     FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
+    EasyLocalization.ensureInitialized();
 
+    await configureDependencies();
     await AndroidAlarmManager.initialize();
     await Future.wait([
-      configureDependencies(),
       AppBackendService.instance.init(),
       SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge),
       SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]),
@@ -27,35 +29,45 @@ class RemainderApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return DefaultAssetBundle(
       bundle: SentryAssetBundle(),
-      child: MaterialApp(
-        home: Home(),
-        title: 'Flutter Demo',
-        theme: AppThemeConfig.ref.data,
-        // The navigator key is necessary to allow to navigate through static methods
-        navigatorKey: AppNavigatorKey.navigatorKey,
-        builder: (context, child) {
-          return MediaQuery(
-            data: MediaQuery.of(
-              context,
-            ).copyWith(textScaler: TextScaler.linear(1.0)),
-            child: ScrollConfiguration(
-              behavior: const ScrollBehavior().copyWith(
-                overscroll: false,
-                physics: const BouncingScrollPhysics(),
-              ),
-              child: AnnotatedRegion<SystemUiOverlayStyle>(
-                value: SystemUiOverlayStyle(
-                  statusBarColor: Colors.transparent,
-                  statusBarIconBrightness: Brightness.dark,
-                  systemNavigationBarColor: Colors.transparent,
-                ),
-                child: child!,
-              ),
-            ),
-          );
+      child: GestureDetector(
+        behavior: HitTestBehavior.translucent,
+        onTap: () {
+          WidgetsBinding.instance.focusManager.primaryFocus?.unfocus();
         },
-        navigatorObservers: AppBackendService.instance.navigationObservers,
-        routes: {'/fullScreenTest': (context) => FullScreenTest()},
+        child: MaterialApp.router(
+          theme: AppThemeConfig.ref.data,
+          // The navigator key is necessary to allow to navigate through static methods
+          // navigatorKey: AppNavigatorKey.navigatorKey,
+          // navigatorObservers: AppBackendService.instance.navigationObservers,
+          // routes: {'/fullScreenTest': (context) => FullScreenTest()},
+          routerConfig: GetAppNavigator.appRouter().config(
+            includePrefixMatches: true,
+            navigatorObservers: () => [AppRouteObserver()],
+            placeholder: (_) =>
+                ColoredBox(color: AppColor.primaryBlue.shade500),
+          ),
+          builder: (context, child) {
+            return MediaQuery(
+              data: MediaQuery.of(
+                context,
+              ).copyWith(textScaler: TextScaler.linear(1.0)),
+              child: ScrollConfiguration(
+                behavior: const ScrollBehavior().copyWith(
+                  overscroll: false,
+                  physics: const BouncingScrollPhysics(),
+                ),
+                child: AnnotatedRegion<SystemUiOverlayStyle>(
+                  value: SystemUiOverlayStyle(
+                    statusBarColor: Colors.transparent,
+                    statusBarIconBrightness: Brightness.dark,
+                    systemNavigationBarColor: Colors.transparent,
+                  ),
+                  child: child!,
+                ),
+              ),
+            );
+          },
+        ),
       ),
     );
   }
@@ -175,7 +187,7 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(centerTitle: true, title: Text('App Bar')),
+      appBar: AppBar(context, title: 'App Bar'),
       body: Stack(
         children: [
           Center(
@@ -214,7 +226,7 @@ class _HomeState extends State<Home> {
                 //   },
                 //   child: const Text('Fire an event'),
                 // ),
-                AppIconSvg.asset(AppAsset.icPillMind, height: 200),
+                AppIconSvg.asset(AppAsset.icPillMindPng, height: 200),
               ],
             ),
           ),
@@ -276,7 +288,7 @@ class FullScreenTest extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Full Screen Widget')),
+      appBar: AppBar(context, title: 'Full Screen Widget'),
       body: Center(child: Text('This is a full-screen Flutter widget!')),
     );
   }

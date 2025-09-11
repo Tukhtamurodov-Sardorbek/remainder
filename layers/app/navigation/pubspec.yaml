@@ -11,6 +11,10 @@ dependencies:
 
   core:
     path: ../../domain/core
+  entry_feature:
+    path: ../../features/entry_feature
+  feature_home:
+    path: ../../features/feature_home
 
 dev_dependencies:
   flutter_test:
@@ -25,7 +29,7 @@ dev_dependencies:
 # following page: https://dart.dev/tools/pub/pubspec
 
 # The following section is specific to Flutter packages.
-flutter:
+#flutter:
 
   # To add assets to your package, add an assets section, like this:
   # assets:
