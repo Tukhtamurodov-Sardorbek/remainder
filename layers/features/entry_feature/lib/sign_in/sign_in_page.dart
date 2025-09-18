@@ -4,28 +4,28 @@ import 'package:entry_feature/global/alternative_options_view.dart';
 import 'package:flutter/material.dart' hide AppBar;
 import 'package:navigation/di/get.dart';
 
-part 'components/state_mixin.dart';
-
 part 'components/header.dart';
 
-part 'components/create_account_button.dart';
+part 'components/state_mixin.dart';
+
+part 'components/login_button.dart';
 
 @RoutePage()
-class SignUpPage extends StatefulWidget {
-  const SignUpPage({super.key});
+class SignInPage extends StatefulWidget {
+  const SignInPage({super.key});
 
   @override
-  State<SignUpPage> createState() => _SignUpPageState();
+  State<SignInPage> createState() => _SignInPageState();
 
   // Static method to access the state from descendant widgets
-  static _SignUpPageState of(BuildContext context) {
-    final state = context.findAncestorStateOfType<_SignUpPageState>();
-    assert(state != null, 'No SignUpPage ancestor found in the widget tree');
+  static _SignInPageState of(BuildContext context) {
+    final state = context.findAncestorStateOfType<_SignInPageState>();
+    assert(state != null, 'No SignInPage ancestor found in the widget tree');
     return state!;
   }
 }
 
-class _SignUpPageState extends State<SignUpPage>
+class _SignInPageState extends State<SignInPage>
     with SequentialDownToUp, AppStatefulMixin, _StateHelper {
   @override
   ({double defaultInitDelay, double? delta, Map<int, int> slotsPerOrder})
@@ -76,6 +76,11 @@ class _SignUpPageState extends State<SignUpPage>
                                 context,
                               ).requestFocus(data[index + 1].node);
                             },
+                            autoValidateMode: AutovalidateMode.always,
+                            validator: (input) {
+                              if (input?.isEmpty == true) return null;
+                              return 'Username and password doesn’t match';
+                            },
                           ).conditionalWrapper(
                             condition: data[index].isPassword,
                             wrapper: (_) {
@@ -111,7 +116,7 @@ class _SignUpPageState extends State<SignUpPage>
                     },
                     separatorBuilder: (context, index) => 16.verticalSpace,
                   ),
-                  _CreateAnAccountButton(),
+                  _LoginButton(),
                   AlternativeOptionsView(
                     appleAccountPressed: () {},
                     googleAccountPressed: () {},
@@ -130,7 +135,7 @@ class _SignUpPageState extends State<SignUpPage>
               minimum: EdgeInsets.only(bottom: 18, top: 12),
               child: AppTaggedText(
                 text:
-                    'Already Have an account? ${AppTaggedText.wrapArgument('Sign in')}'
+                    'Don’t have an account? ${AppTaggedText.wrapArgument('Sign up')}'
                         .needsToBeTranslated,
                 taggedStyle: theme.textTheme.labelSmall!.modifier(
                   color: AppColor.primaryBlue.shade500,
@@ -140,7 +145,7 @@ class _SignUpPageState extends State<SignUpPage>
                   color: AppColor.text.shade800,
                 ),
                 onTagPressed: () {
-                  GetAppNavigator.entryNavigator().navigateSignInPage(
+                  GetAppNavigator.entryNavigator().navigateSignUpPage(
                     context,
                     replace: true,
                   );

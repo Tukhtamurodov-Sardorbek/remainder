@@ -68,3 +68,46 @@ class DownToUp extends StatelessWidget {
     );
   }
 }
+
+@optionalTypeArgs
+mixin SequentialDownToUp {
+  double? _delay, _delta;
+  Map<int, int>? _slots;
+
+  // @protected
+  // double get defaultInitDelay;
+  //
+  // @protected
+  // Map<int, int> get slotsPerOrder;
+
+  ({double defaultInitDelay, double? delta, Map<int, int> slotsPerOrder})
+  get setupSequence;
+
+  // @nonVirtual
+  @protected
+  double delayFactor(int order, [int? index]) {
+    if (_delay == null || _delta == null || _slots == null) {
+      final record = setupSequence;
+      _delta = record.delta ?? 0.1;
+      _slots = record.slotsPerOrder;
+      _delay = record.defaultInitDelay;
+    }
+
+    if (order == 0) {
+      return _delay! - 0.1;
+    }
+    if (order < 0) {
+      final result = _delay! - ((1 - order) / 100);
+      return result.isNegative ? 0 : result;
+    }
+    int basePosition = 0;
+
+    for (int i = 1; i < order; i++) {
+      basePosition += _slots?[i] ?? 1;
+    }
+
+    int position = basePosition + (index ?? 0);
+    final result = double.parse((_delay! + position * _delta!).toStringAsFixed(1));
+    return result;
+  }
+}

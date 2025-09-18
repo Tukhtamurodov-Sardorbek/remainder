@@ -6,6 +6,8 @@ import 'package:backend_services/backend_services.dart';
 
 // import 'package:core/core.dart' show AndroidAlarmManager;
 import 'package:design_system/design_system.dart' show ScreenUtilInit;
+import 'package:device_preview/device_preview.dart';
+import 'package:flutter/foundation.dart' show kReleaseMode;
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:remainder/app.dart';
@@ -18,28 +20,33 @@ void printHello() {
   print("[$now] Hello, world! isolate=${isolateId} function='$printHello'");
 }
 
-void main() async {
+Future<void> template({bool enableDevicePreview = false}) async {
   await runZonedGuarded(
     () async {
       await Future.microtask(RemainderApp.setup);
       runApp(
-        ScreenUtilInit(
-          minTextAdapt: true,
-          splitScreenMode: true,
-          useInheritedMediaQuery: true,
-          designSize: const Size(390, 844),
-          child: const RemainderApp(),
-          builder: (context, child) {
-            FlutterNativeSplash.remove();
-            return EasyLocalization(
-              useOnlyLangCode: true,
-              useFallbackTranslations: true,
-              path: AppLocaleConfig.localePath,
-              fallbackLocale: const Locale(AppLocaleConfig.fallbackLocale),
-              supportedLocales: AppLocale.values
-                  .map((e) => Locale(e.languageCode))
-                  .toList(),
-              child: child!,
+        DevicePreview(
+          enabled: enableDevicePreview,
+          builder: (context) {
+            return ScreenUtilInit(
+              minTextAdapt: true,
+              splitScreenMode: true,
+              useInheritedMediaQuery: true,
+              designSize: const Size(390, 844),
+              child: const RemainderApp(),
+              builder: (context, child) {
+                FlutterNativeSplash.remove();
+                return EasyLocalization(
+                  useOnlyLangCode: true,
+                  useFallbackTranslations: true,
+                  path: AppLocaleConfig.localePath,
+                  fallbackLocale: const Locale(AppLocaleConfig.fallbackLocale),
+                  supportedLocales: AppLocale.values
+                      .map((e) => Locale(e.languageCode))
+                      .toList(),
+                  child: child!,
+                );
+              },
             );
           },
         ),

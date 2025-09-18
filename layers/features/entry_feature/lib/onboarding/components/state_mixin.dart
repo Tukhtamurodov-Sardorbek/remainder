@@ -1,10 +1,13 @@
 part of '../onboarding_page.dart';
 
 mixin _StateHelper on State<OnboardPage> {
+  int _previousPageIndex = 0;
   late final PageController _pageController;
+  late final double _horizontalMargin = 14.r;
   late final ValueNotifier<int> _currentIndex;
   late final DerivedPageController _mirroredPageCtrl;
   late final DerivedValueNotifier<int, bool> _isInitial, _isLast;
+  late final _animationDuration = const Duration(milliseconds: 500);
 
   final _data = [
     MapEntry(
@@ -50,30 +53,47 @@ mixin _StateHelper on State<OnboardPage> {
     super.dispose();
   }
 
+  void _updateCurrentPageIndex(int index) {
+    _previousPageIndex = _currentIndex.value;
+    _currentIndex.value = index;
+  }
+
   void _toPreviousPage() {
-    _currentIndex.value -= 1;
+    _updateCurrentPageIndex(_currentIndex.value - 1);
     _pageController.animateToPage(
       _currentIndex.value,
-      duration: const Duration(milliseconds: 450),
-      curve: Curves.easeInOut,
+      curve: Curves.easeOutQuad,
+      duration: _animationDuration,
     );
   }
 
   void _toNextPage() {
-    _currentIndex.value += 1;
+    _updateCurrentPageIndex(_currentIndex.value + 1);
     _pageController.animateToPage(
       _currentIndex.value,
-      duration: const Duration(milliseconds: 450),
-      curve: Curves.easeInOut,
+      curve: Curves.easeOutQuad,
+      duration: _animationDuration,
     );
   }
 
   void _toLastPage() {
-    _currentIndex.value = 2;
+    _updateCurrentPageIndex(2);
     _pageController.animateToPage(
       _currentIndex.value,
-      duration: const Duration(milliseconds: 450),
-      curve: Curves.easeInOut,
+      curve: Curves.easeInQuad,
+      duration: const Duration(milliseconds: 600),
     );
+  }
+
+  Future<void> _onPopInvoked(bool didPop, Object? result) async {
+    if (didPop) {
+      return;
+    }
+    if (_currentIndex.value == 0) {
+      SystemNavigator.pop();
+      // Navigator.of(context).pop(result);
+    } else {
+      _toPreviousPage();
+    }
   }
 }

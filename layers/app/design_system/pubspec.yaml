@@ -14,6 +14,8 @@ dependencies:
   flutter_screenutil: ^5.9.3
   flutter_staggered_animations: ^1.1.1
   animated_text_kit: ^4.2.3
+  auto_size_text: ^3.0.0
+  smooth_page_indicator: ^1.2.1
 
   core:
     path: ../../domain/core

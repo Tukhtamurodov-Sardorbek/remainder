@@ -50,7 +50,7 @@ extension TextStyleExt on TextStyle {
   }) {
     return copyWith(
       inherit: inherit,
-      fontSize: fontSize?.sp,
+      fontSize: fontSize?.spMin,
       color: color ?? AppColor.text.shade500,
       fontWeight: fontWeight?.weight,
       backgroundColor: backgroundColor,

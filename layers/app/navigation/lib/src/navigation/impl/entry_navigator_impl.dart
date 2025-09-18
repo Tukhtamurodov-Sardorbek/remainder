@@ -12,7 +12,24 @@ class EntryNavigatorImpl extends EntryNavigator {
   }
 
   @override
-  Future<void> navigateSignUpPage(BuildContext context) {
+  Future<void> navigateSignUpPage(
+    BuildContext context, {
+    bool replace = false,
+  }) {
+    if (replace) {
+      return context.router.replace<bool?>(const SignUpRoute());
+    }
     return context.router.push<bool?>(const SignUpRoute());
+  }
+
+  @override
+  Future<void> navigateSignInPage(
+    BuildContext context, {
+    bool replace = false,
+  }) {
+    if (replace) {
+      return context.router.replace<bool?>(const SignInRoute());
+    }
+    return context.router.push<bool?>(const SignInRoute());
   }
 }

@@ -1,6 +1,8 @@
 import 'package:backend_services/backend_services.dart';
 import 'package:core/core.dart';
 import 'package:design_system/design_system.dart';
+import 'package:device_preview/device_preview.dart';
+import 'package:flutter/foundation.dart' show kReleaseMode;
 import 'package:flutter/material.dart' hide AppBar;
 import 'package:flutter/services.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
@@ -35,6 +37,8 @@ class RemainderApp extends StatelessWidget {
           WidgetsBinding.instance.focusManager.primaryFocus?.unfocus();
         },
         child: MaterialApp.router(
+          useInheritedMediaQuery: true,
+          locale: DevicePreview.locale(context),
           theme: AppThemeConfig.ref.data,
           // The navigator key is necessary to allow to navigate through static methods
           // navigatorKey: AppNavigatorKey.navigatorKey,
@@ -47,7 +51,7 @@ class RemainderApp extends StatelessWidget {
                 ColoredBox(color: AppColor.primaryBlue.shade500),
           ),
           builder: (context, child) {
-            return MediaQuery(
+            final ch = MediaQuery(
               data: MediaQuery.of(
                 context,
               ).copyWith(textScaler: TextScaler.linear(1.0)),
@@ -66,6 +70,10 @@ class RemainderApp extends StatelessWidget {
                 ),
               ),
             );
+            if (kReleaseMode) {
+              return ch;
+            }
+            return DevicePreview.appBuilder(context, ch);
           },
         ),
       ),

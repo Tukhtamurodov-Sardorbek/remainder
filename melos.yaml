@@ -58,6 +58,10 @@ scripts:
         - feature_local_auth
     description: Run build_runner generation
 
+  run_default_app:
+    run: melos exec --scope=app_bloc -- dart run build_runner build --delete-conflicting-outputs
+    description: Run build_runner generation for app_bloc
+
   builder_app_bloc:
     run: melos exec --scope=app_bloc -- dart run build_runner build --delete-conflicting-outputs
     description: Run build_runner generation for app_bloc

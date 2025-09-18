@@ -133,33 +133,75 @@ extension IconDataExt on IconData {
 }
 
 extension ListWidgetExt on List<Widget> {
-  Column column({
+  Widget column({
     double spacing = 0.0,
     MainAxisSize mainAxisSize = MainAxisSize.max,
     MainAxisAlignment mainAxisAlignment = MainAxisAlignment.start,
     CrossAxisAlignment crossAxisAlignment = CrossAxisAlignment.center,
+    bool isSliver = false,
+    EdgeInsets? margin,
+    double? delayFactor,
+    Widget Function(Widget child)? wrapWith,
   }) {
     return Column(
-      spacing: spacing,
-      mainAxisSize: mainAxisSize,
-      mainAxisAlignment: mainAxisAlignment,
-      crossAxisAlignment: crossAxisAlignment,
-      children: this,
-    );
+          spacing: spacing,
+          mainAxisSize: mainAxisSize,
+          mainAxisAlignment: mainAxisAlignment,
+          crossAxisAlignment: crossAxisAlignment,
+          children: this,
+        )
+        .conditionalWrapper(
+          condition: margin != null,
+          wrapper: (child) => Padding(padding: margin!, child: child),
+        )
+        .conditionalWrapper(
+          condition: delayFactor != null,
+          wrapper: (child) =>
+              child.wrapWithDownToUpAnimation(delayFactor: delayFactor!),
+        )
+        .conditionalWrapper(
+          condition: wrapWith != null,
+          wrapper: (child) => wrapWith!.call(child),
+        )
+        .conditionalWrapper(
+          condition: isSliver,
+          wrapper: (child) => SliverToBoxAdapter(child: child),
+        );
   }
 
-  Row row({
+  Widget row({
     double spacing = 0.0,
     MainAxisSize mainAxisSize = MainAxisSize.max,
     MainAxisAlignment mainAxisAlignment = MainAxisAlignment.start,
     CrossAxisAlignment crossAxisAlignment = CrossAxisAlignment.center,
+    bool isSliver = false,
+    EdgeInsets? margin,
+    double? delayFactor,
+    Widget Function(Widget child)? wrapWith,
   }) {
     return Row(
-      spacing: spacing,
-      mainAxisSize: mainAxisSize,
-      mainAxisAlignment: mainAxisAlignment,
-      crossAxisAlignment: crossAxisAlignment,
-      children: this,
-    );
+          spacing: spacing,
+          mainAxisSize: mainAxisSize,
+          mainAxisAlignment: mainAxisAlignment,
+          crossAxisAlignment: crossAxisAlignment,
+          children: this,
+        )
+        .conditionalWrapper(
+          condition: margin != null,
+          wrapper: (child) => Padding(padding: margin!, child: child),
+        )
+        .conditionalWrapper(
+          condition: delayFactor != null,
+          wrapper: (child) =>
+              child.wrapWithDownToUpAnimation(delayFactor: delayFactor!),
+        )
+        .conditionalWrapper(
+          condition: wrapWith != null,
+          wrapper: (child) => wrapWith!.call(child),
+        )
+        .conditionalWrapper(
+          condition: isSliver,
+          wrapper: (child) => SliverToBoxAdapter(child: child),
+        );
   }
 }

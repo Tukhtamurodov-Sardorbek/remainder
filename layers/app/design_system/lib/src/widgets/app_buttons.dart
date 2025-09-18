@@ -2,84 +2,88 @@ import 'package:design_system/design_system.dart';
 import 'package:flutter/material.dart';
 
 class PrimaryButton extends TextButton {
-  PrimaryButton({
+  const PrimaryButton._({
     super.key,
-    required super.onPressed,
+    super.clipBehavior,
+    required super.style,
     required super.child,
+    required super.onPressed,
+  });
+
+  factory PrimaryButton({
+    Key? key,
+    Size? size,
+    Clip? clipBehavior,
+    EdgeInsets? padding,
     required bool isDark,
-    double? width,
-    double? height,
-    REdgeInsets? padding,
+    required Widget child,
     Color? foregroundColor,
     Color? backgroundColor,
+    Color? pressedColor,
+    Color? unpressedColor,
+    VoidCallback? onPressed,
     ButtonType type = ButtonType.styled,
+    bool applyDefaultPressedColor = false,
     ButtonBorder border = const ButtonBorder.noBorder(),
-  }) : super(
-         style: ButtonStyle(
-           padding: WidgetStatePropertyAll(
-             padding ?? const EdgeInsets.all(12).r,
-           ),
-           fixedSize: WidgetStatePropertyAll(
-             Size(
-               width ?? 1.sw,
-               type.isTransparent
-                   ? (height ?? DesignConstants.defaultButtonHeight - 2)
-                   : (height ?? DesignConstants.defaultButtonHeight),
-             ),
-           ),
-           shape: WidgetStatePropertyAll(
-             RoundedRectangleBorder(
-               side: border.side,
-               borderRadius: BorderRadius.circular(
-                 DesignConstants.borderRadius16,
-               ),
-             ),
-           ),
-           foregroundColor: type.isTransparent
-               ? null
-               : WidgetStatePropertyAll(
-                   foregroundColor ?? AppColor.white,
-                   // (isDark
-                   //     ? AppColorDark.elementsPrimary
-                   //     : AppColorLight.elementsPrimary),
-                 ),
-           overlayColor: type.isTransparent
-               ? WidgetStateProperty.resolveWith<Color>((
-                   Set<WidgetState> states,
-                 ) {
-                   return Colors.transparent;
-                 })
-               : WidgetStateProperty.resolveWith<Color>((
-                   Set<WidgetState> states,
-                 ) {
-                   if (states.contains(WidgetState.pressed)) {
-                     return AppColor.buttonPressed;
-                   }
-                   return AppColor.buttonUnselected;
-                 }),
-           backgroundColor: type.isTransparent
-               ? null
-               : WidgetStateProperty.resolveWith<Color>((
-                   Set<WidgetState> states,
-                 ) {
-                   if (states.contains(WidgetState.disabled)) {
-                     return AppColor.buttonDisabled;
-                     // isDark
-                     // ? AppColorDark.disabledButtonColor
-                     // : AppColorLight.disabledButtonColor;
-                   }
-                   return backgroundColor ?? AppColor.primaryBlue.shade500;
-                 }),
-           textStyle: WidgetStatePropertyAll(
-             TextStyle(
-               fontSize: 16.sp,
-               color: foregroundColor,
-               fontWeight: FontWeight.w600,
-               fontFamily: DesignConstants.fontFamily,
-             ),
-           ),
-         ),
-       );
+  }) {
+    return PrimaryButton._(
+      key: key,
+      onPressed: onPressed,
+      clipBehavior: clipBehavior,
+      style: ButtonStyle(
+        padding: WidgetStatePropertyAll(
+          (padding ?? const EdgeInsets.all(12)).r,
+        ),
+        fixedSize: WidgetStatePropertyAll(
+          Size(
+            size?.width ?? 1.sw,
+            type.isTransparent
+                ? (size?.height ?? DesignConstants.defaultButtonHeight - 2)
+                : (size?.height ?? DesignConstants.defaultButtonHeight),
+          ),
+        ),
+        shape: WidgetStatePropertyAll(
+          RoundedRectangleBorder(
+            side: border.side,
+            borderRadius: BorderRadius.circular(DesignConstants.borderRadius16),
+          ),
+        ),
+        foregroundColor: WidgetStatePropertyAll(
+          foregroundColor ??
+              (type.isTransparent ? AppColor.neutral.shade400 : AppColor.white),
+        ),
+        overlayColor: type.isTransparent
+            ? WidgetStateProperty.resolveWith<Color>((Set<WidgetState> states) {
+                return AppColor.neutral.shade200.withValues(alpha: 0.5);
+              })
+            : WidgetStateProperty.resolveWith<Color>((Set<WidgetState> states) {
+                if (states.contains(WidgetState.pressed)) {
+                  return applyDefaultPressedColor
+                      ? AppColor.neutral.shade200.withValues(alpha: 0.5)
+                      : pressedColor ?? AppColor.buttonPressed;
+                }
+                return unpressedColor ?? AppColor.buttonUnselected;
+              }),
+        backgroundColor: type.isTransparent
+            ? null
+            : WidgetStateProperty.resolveWith<Color>((Set<WidgetState> states) {
+                if (states.contains(WidgetState.disabled)) {
+                  return AppColor.buttonDisabled;
+                }
+                return backgroundColor ?? AppColor.primaryBlue.shade500;
+              }),
+        textStyle: WidgetStatePropertyAll(
+          TextStyle(
+            fontSize: 16.sp,
+            color: foregroundColor,
+            fontWeight: FontWeight.w600,
+            fontFamily: DesignConstants.fontFamily,
+          ),
+        ),
+      ),
+      child: child,
+    );
+  }
 }
 
 ///////////////////////////////////////////////////////////////////////////////

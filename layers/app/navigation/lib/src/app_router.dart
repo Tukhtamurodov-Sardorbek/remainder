@@ -18,6 +18,9 @@ class AppRouter extends RootStackRouter {
         AutoRoute(page: SplashRoute.page, initial: true),
         AutoRoute(page: OnboardRoute.page),
         AutoRoute(page: SignUpRoute.page),
+        AutoRoute(page: SignInRoute.page, children: [
+
+        ]),
       ],
     ),
   ];

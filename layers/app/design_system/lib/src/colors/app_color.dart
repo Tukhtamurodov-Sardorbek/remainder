@@ -65,7 +65,7 @@ final class AppColor {
   });
 
   static const Color white = Color(0xFFFFFFFF);
-  static const Color buttonPressed = Color(0xFF0B2455);
+  static const Color buttonPressed = Color(0x800B2455);
   static const Color buttonUnselected = Color(0xFF1256DB);
   static const Color buttonDisabled = Color(0xFFE6E6E6);
 }

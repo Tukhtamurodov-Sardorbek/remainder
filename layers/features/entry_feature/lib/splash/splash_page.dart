@@ -98,6 +98,7 @@ class _SplashPageState extends State<SplashPage> with AppStatefulMixin {
                           'Pill Mind',
                           style: theme.textTheme.displayLarge?.modifier(
                             fontWeight: AppFontWeight.regular,
+                            color: AppColor.white,
                           ),
                         ),
                       ].column(mainAxisSize: MainAxisSize.min),
