@@ -93,3 +93,7 @@ scripts:
   builder_usecase:
     run: melos exec --scope=usecase -- dart run build_runner build --delete-conflicting-outputs
     description: Run build_runner generation for usecase
+    
+  format:
+    run: dart format --set-exit-if-changed .
+    description: run `dart format --set-exit-if-changed .` in all packages

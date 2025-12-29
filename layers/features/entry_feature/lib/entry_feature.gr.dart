@@ -12,7 +12,7 @@
 import 'package:auto_route/auto_route.dart' as _i7;
 import 'package:entry_feature/entry_feature.dart' as _i1;
 import 'package:entry_feature/onboarding/onboarding_page.dart' as _i3;
-import 'package:entry_feature/sign_in/forgot_password/forgot_password_page.dart'
+import 'package:entry_feature/sign_in/screens/forgot_password/forgot_password_page.dart'
     as _i2;
 import 'package:entry_feature/sign_in/sign_in_page.dart' as _i4;
 import 'package:entry_feature/sign_up/sign_up_page.dart' as _i5;
